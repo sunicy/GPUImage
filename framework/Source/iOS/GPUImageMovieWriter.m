@@ -499,7 +499,9 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
     {
         if( assetWriter.status != AVAssetWriterStatusWriting )
         {
-            [assetWriter startWriting];
+            if (!isRecording) {
+                [assetWriter startWriting];
+            }
         }
         videoQueue = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.videoReadingQueue", GPUImageDefaultQueueAttribute());
         [assetWriterVideoInput requestMediaDataWhenReadyOnQueue:videoQueue usingBlock:^{
@@ -739,7 +741,9 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
         runSynchronouslyOnContextQueue(_movieWriterContext, ^{
             if ((videoInputReadyCallback == NULL) && (assetWriter.status != AVAssetWriterStatusWriting))
             {
-                [assetWriter startWriting];
+                if (!isRecording) {
+                    [assetWriter startWriting];
+                }
             }
             
             [assetWriter startSessionAtSourceTime:frameTime];
